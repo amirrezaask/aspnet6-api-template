@@ -1,11 +1,11 @@
 ﻿using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using MinimalPlus.Configurations;
 
 namespace MinimalPlus;
+
 
 public static class SetupExtensions
 {
@@ -48,7 +48,7 @@ public static class SetupExtensions
             ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
             IssuerSigningKey =
-                new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration.GetJwtConfigurations().Secret))
+                new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration.GetConfigurationOf<JwtConfigurations>().Secret))
         };
         // Adding token validation parameters
         builder.Services.AddSingleton(tokenValidationParameters);
@@ -62,7 +62,7 @@ public static class SetupExtensions
     }
     public static WebApplicationBuilder WantDatabase(this WebApplicationBuilder builder)
     {
-        builder.Services.AddSqlite<ApplicationDatabaseContext>(builder.Configuration.GetDatabaseConfigurations().ConnectionString);
+        builder.Services.AddSqlite<ApplicationDatabaseContext>(builder.Configuration.GetConfigurationOf<DatabaseConfigurations>().ConnectionString);
         return builder;
     }
     public static WebApplication ConfigurePipeline(this WebApplication app)

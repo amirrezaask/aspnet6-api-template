@@ -14,9 +14,9 @@ public static class AuthenticationHandler
     public static WebApplication MapAuthenticationAPIs(this WebApplication app, string prefix)
     {
         // User APIs
-        app.MapPost($"{prefix}/auth/register", AuthenticationHandler.Register);
-        app.MapPost($"{prefix}/auth/login", AuthenticationHandler.Login);
-        app.MapGet($"{prefix}/auth/validate", AuthenticationHandler.ValidateToken);
+        app.MapPost($"{prefix}/auth/register", Register);
+        app.MapPost($"{prefix}/auth/login", Login);
+        app.MapGet($"{prefix}/auth/validate", ValidateToken);
         return app;
     }
     public static async Task<string> Register(ApplicationDatabaseContext dbContext, JwtConfigurations config, User user)

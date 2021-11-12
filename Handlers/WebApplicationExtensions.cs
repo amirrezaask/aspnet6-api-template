@@ -1,4 +1,6 @@
-﻿namespace MinimalPlus.Handlers;
+﻿using System.Reflection;
+
+namespace MinimalPlus.Handlers;
 
 public static class WebApplicationExtensions
 {
@@ -8,7 +10,6 @@ public static class WebApplicationExtensions
         
         // Map authentication APIs
         app.MapAuthenticationAPIs(apiV1);
-        
         app.MapGet("/hello/world", HelloHandler.HelloWorld);
         
         return app;

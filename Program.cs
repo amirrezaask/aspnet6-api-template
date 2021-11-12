@@ -1,6 +1,7 @@
 using MinimalPlus;
 using MinimalPlus.Configurations;
 using MinimalPlus.Handlers;
+using System.Reflection;
 
 WebApplication
     .CreateBuilder(args)
