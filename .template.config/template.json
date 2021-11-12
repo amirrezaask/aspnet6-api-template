@@ -9,8 +9,8 @@
         "ASPNETCore"
     ],
     "identity": "amirrezaask.api",
-    "name": "My Custom template for WebAPIs and dotnet6",
-    "shortName": "amirrezaapi",
+    "name": "aspnet6 template with lots of goodies",
+    "shortName": "aspnet6api",
     "tags": {
         "language": "C#",
         "type": "project"

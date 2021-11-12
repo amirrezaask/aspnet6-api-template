@@ -9,16 +9,8 @@ using MinimalPlus.Models;
 
 namespace MinimalPlus.Handlers;
 
-public static class AuthenticationHandler
+public class AuthenticationHandler : IHandler
 {
-    public static WebApplication MapAuthenticationAPIs(this WebApplication app, string prefix)
-    {
-        // User APIs
-        app.MapPost($"{prefix}/auth/register", Register);
-        app.MapPost($"{prefix}/auth/login", Login);
-        app.MapGet($"{prefix}/auth/validate", ValidateToken);
-        return app;
-    }
     public static async Task<string> Register(ApplicationDatabaseContext dbContext, JwtConfigurations config, User user)
     {
         user.Id = Guid.NewGuid().ToString();
@@ -66,5 +58,13 @@ public static class AuthenticationHandler
             expires: DateTime.Now.Add(_config.ExpiresIn),
             signingCredentials: credentials);
         return new JwtSecurityTokenHandler().WriteToken(token);
+    }
+
+    public WebApplication Map(string prefix, WebApplication app)
+    {
+        app.MapPost($"{prefix}/auth/register", Register);
+        app.MapPost($"{prefix}/auth/login", Login);
+        app.MapGet($"{prefix}/auth/validate", ValidateToken);
+        return app;
     }
 }

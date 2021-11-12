@@ -11,5 +11,5 @@ WebApplication
     .WantDatabase()
     .Build()
     .ConfigurePipeline()
-    .MapAPIs()
+    .MapAPIs("/api/v1")
     .Run();
