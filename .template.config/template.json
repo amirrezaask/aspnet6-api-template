@@ -1,0 +1,18 @@
+{
+    "$schema": "http://json.schemastore.org/template",
+    "author": "AmirrezaAsk",
+    "classifications": [
+        "Common",
+        "Web",
+        "C#10",
+        "MinimalAPIs",
+        "ASPNETCore"
+    ],
+    "identity": "amirrezaask.api",
+    "name": "My Custom template for WebAPIs and dotnet6",
+    "shortName": "amirrezaapi",
+    "tags": {
+        "language": "C#",
+        "type": "project"
+    }
+}
