@@ -4,12 +4,10 @@ using System.Text;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using MinimalPlus.Configurations;
-using MinimalPlus.Models;
 
 namespace MinimalPlus.Handlers;
 
-public class AuthenticationHandler : IHandler
+public class AuthenticationHandler : IHttpHandler
 {
     public static async Task<string> Register(ApplicationDatabaseContext dbContext, JwtConfigurations config, User user)
     {

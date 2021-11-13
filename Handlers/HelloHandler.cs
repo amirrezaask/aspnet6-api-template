@@ -1,6 +1,6 @@
 ﻿namespace MinimalPlus.Handlers;
 
-public class HelloHandler : IHandler
+public class HelloHandler : IHttpHandler
 {
     public static IResult HelloWorld() => Results.Ok();
     public WebApplication Map(string prefix, WebApplication app)

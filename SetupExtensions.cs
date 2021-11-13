@@ -1,14 +1,70 @@
-﻿using System.Text;
+﻿using System.Reflection;
+using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using MinimalPlus.Configurations;
 
 namespace MinimalPlus;
+public interface IHttpHandler
+{
+    WebApplication Map(string prefix, WebApplication app);
+}
+public class ConfigurationAttribute : Attribute
+{
+    public string ConfigurationKey { get; set; }
+    public ConfigurationAttribute()
+    {
 
-
+    }
+    public ConfigurationAttribute(string key)
+    {
+        ConfigurationKey = key;
+    }
+}
 public static class SetupExtensions
 {
+    public static WebApplicationBuilder WantConfigurations(this WebApplicationBuilder builder)
+    {
+        foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies())
+        {
+            foreach (Type type in assembly.GetTypes())
+            {
+                var attribs = type.GetCustomAttributes(typeof(ConfigurationAttribute), false);
+                if (attribs != null && attribs.Length > 0)
+                {
+                    var attr = (ConfigurationAttribute)attribs[0];
+                    Console.WriteLine(attr.ConfigurationKey);
+                    var obj = builder.Configuration.GetSection($"{attr.ConfigurationKey}").Get(type);
+                    builder.Services.AddSingleton(type, obj);
+                }
+            }
+        }
+        return builder;
+    }
+    public static T GetConfigurationOf<T>(this IConfiguration configuration)
+    {
+        var attr = typeof(T).GetCustomAttribute<ConfigurationAttribute>();
+        if (attr == null)
+        {
+            return default;
+        }
+        return (T)configuration.GetSection(attr.ConfigurationKey).Get(typeof(T));
+    }
+    public static WebApplication MapAPIs(this WebApplication app, string prefix)
+    {
+        foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies())
+        {
+            foreach (Type type in assembly.GetTypes())
+            {
+                if (type.GetInterfaces().Contains(typeof(IHttpHandler)))
+                {
+                    var h = (IHttpHandler)Activator.CreateInstance(type);
+                    h.Map(prefix, app);
+                }
+            }
+        }
+        return app;
+    }
     public static WebApplicationBuilder WantSwagger(this WebApplicationBuilder builder)
     {
         // Swagger
